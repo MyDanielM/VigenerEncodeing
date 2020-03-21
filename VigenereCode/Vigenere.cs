@@ -52,13 +52,19 @@ namespace VigenereCode
         {
             
             conformityTable = new Dictionary<int, char>();
-            int numb = 0;
+            int numb = 1;
             if (abc == "RU" || abc == "ru" || abc =="Ru")
             {
                 for (int code = 'а'; code <= 'я'; code++)
                 {
                     conformityTable.Add(numb++, (char)code);
                 }
+
+                conformityTable.Add(numb, ',');
+                numb++;
+                conformityTable.Add(numb, '.');
+                numb++;
+                conformityTable.Add(numb, ' ');
             }
             else if (abc == "EN" || abc == "en" || abc == "En")
             {
@@ -66,6 +72,11 @@ namespace VigenereCode
                 {
                     conformityTable.Add(numb++, (char)code);
                 }
+                conformityTable.Add(numb, ',');
+                numb++;
+                conformityTable.Add(numb, '.');
+                numb++;
+                conformityTable.Add(numb, ' ');
             }
             else throw new setConformityTableException("Введённое значение не соответсвует выбору \"RU\\EN\"!");
             
@@ -152,7 +163,7 @@ namespace VigenereCode
         public static void Encode()
         {
             int count = 0;
-            int abcMod = conformityTable.Count;
+            int abcMod = conformityTable.Count-1;
             int newKey;
             Word[] wordKey = new Word[wordValue.Count];
             Key[] keyKey = new Key[newKeyValue.Count];
@@ -164,7 +175,7 @@ namespace VigenereCode
             while (count != wordKey.Length)
             {
                 newKey = wordKey[count].key + keyKey[count].key;
-                if (newKey >= abcMod)
+                if (newKey > abcMod)
                 {
                     newKey = abcMod - newKey;
                 }
